@@ -52,19 +52,6 @@
                     {% if block.settings.description != blank %}
                       <div class="hero-carousel__description">{{ block.settings.description }}</div>
                     {% endif %}
-                    
-                    {% if block.settings.button_label != blank and block.settings.button_link != blank %}
-                      <div class="hero-carousel__button-wrapper">
-                        <a href="{{ block.settings.button_link }}" 
-                           class="hero-carousel__button"
-                           {% if block.settings.open_in_new_tab %}target="_blank" rel="noopener"{% endif %}>
-                          {{ block.settings.button_label }}
-                          <svg class="hero-carousel__button-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M3.33334 8H12.6667M12.6667 8L8.00001 3.33333M12.6667 8L8.00001 12.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>
-                        </a>
-                      </div>
-                    {% endif %}
                   </div>
                   
                   {% if block.settings.feature_image != blank %}
@@ -629,23 +616,6 @@
           "type": "image_picker",
           "id": "feature_image",
           "label": "Imagen destacada"
-        },
-        {
-          "type": "text",
-          "id": "button_label",
-          "label": "Texto del botón",
-          "default": "Conocer Servicios"
-        },
-        {
-          "type": "url",
-          "id": "button_link",
-          "label": "Enlace del botón"
-        },
-        {
-          "type": "checkbox",
-          "id": "open_in_new_tab",
-          "label": "Abrir enlace en nueva pestaña",
-          "default": false
         }
       ]
     }
@@ -659,8 +629,7 @@
           "settings": {
             "subtitle": "Tecnología",
             "title": "Avanzada",
-            "description": "Desarrollamos con las últimas tecnologías. Utilizamos herramientas de vanguardia para crear soluciones digitales de alto rendimiento.",
-            "button_label": "Conocer Servicios"
+            "description": "Desarrollamos con las últimas tecnologías. Utilizamos herramientas de vanguardia para crear soluciones digitales de alto rendimiento."
           }
         },
         {
@@ -668,8 +637,7 @@
           "settings": {
             "subtitle": "Desarrollo",
             "title": "Innovador",
-            "description": "Creamos experiencias digitales únicas que conectan con tu audiencia y generan resultados excepcionales.",
-            "button_label": "Ver Portfolio"
+            "description": "Creamos experiencias digitales únicas que conectan con tu audiencia y generan resultados excepcionales."
           }
         }
       ]

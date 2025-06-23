@@ -1,0 +1,217 @@
+{% comment %}
+  Simple Contact Section - Sin enlaces externos
+{% endcomment %}
+
+<div class="contact-section contact-section-{{ section.id }}">
+  <div class="contact-section__container">
+    {% if section.settings.title != blank %}
+      <h2 class="contact-section__title">{{ section.settings.title }}</h2>
+    {% endif %}
+    
+    {% if section.settings.description != blank %}
+      <div class="contact-section__description">{{ section.settings.description }}</div>
+    {% endif %}
+
+    <div class="contact-section__content">
+      <div class="contact-section__features">
+        <div class="contact-section__feature">
+          <div class="contact-section__feature-icon">🤖</div>
+          <div class="contact-section__feature-text">Análisis personalizado</div>
+        </div>
+        <div class="contact-section__feature">
+          <div class="contact-section__feature-icon">⚡</div>
+          <div class="contact-section__feature-text">Respuesta rápida</div>
+        </div>
+        <div class="contact-section__feature">
+          <div class="contact-section__feature-icon">📧</div>
+          <div class="contact-section__feature-text">Propuesta a medida</div>
+        </div>
+      </div>
+      
+      <div class="contact-section__info">
+        <h3>Información de Contacto</h3>
+        
+        <div class="contact-section__details">
+          <div class="contact-section__item">
+            <div class="contact-section__icon">📧</div>
+            <span class="contact-section__text">hola@papagayomedia.com</span>
+          </div>
+          
+          <div class="contact-section__item">
+            <div class="contact-section__icon">📱</div>
+            <span class="contact-section__text">Contacto disponible por WhatsApp</span>
+          </div>
+          
+          <div class="contact-section__item">
+            <div class="contact-section__icon">📍</div>
+            <span class="contact-section__text">Ciudad de México, México</span>
+          </div>
+        </div>
+
+        <div class="contact-section__message">
+          <h4>¿Listo para empezar?</h4>
+          <p>Envíanos un mensaje a nuestro email o contáctanos por WhatsApp para discutir tu proyecto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .contact-section {
+    padding: 60px 20px;
+    background: white;
+  }
+
+  .contact-section__container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .contact-section__title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 16px 0;
+  }
+
+  .contact-section__description {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 40px;
+  }
+
+  .contact-section__content {
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 40px 20px;
+  }
+
+  .contact-section__features {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+
+  .contact-section__feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    max-width: 120px;
+  }
+
+  .contact-section__feature-icon {
+    font-size: 32px;
+  }
+
+  .contact-section__feature-text {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+  }
+
+  .contact-section__info {
+    text-align: center;
+  }
+
+  .contact-section__info h3 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    color: #333;
+  }
+
+  .contact-section__details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 30px;
+    text-align: left;
+  }
+
+  .contact-section__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: white;
+    border-radius: 8px;
+  }
+
+  .contact-section__icon {
+    font-size: 20px;
+    min-width: 24px;
+  }
+
+  .contact-section__text {
+    color: #333;
+    font-size: 16px;
+  }
+
+  .contact-section__message {
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+  }
+
+  .contact-section__message h4 {
+    margin: 0 0 12px 0;
+    font-size: 18px;
+    color: #333;
+  }
+
+  .contact-section__message p {
+    margin: 0;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  @media screen and (max-width: 768px) {
+    .contact-section {
+      padding: 40px 20px;
+    }
+
+    .contact-section__title {
+      font-size: 24px;
+    }
+
+    .contact-section__features {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .contact-section__content {
+      padding: 30px 15px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Contact Section",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "¡Hablemos de tu proyecto!"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descripción",
+      "default": "Cuéntanos sobre tu proyecto y te preparamos una propuesta personalizada."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Section"
+    }
+  ]
+}
+{% endschema %}

@@ -1,10 +1,10 @@
 {
   "sections": {
-    "contact_form_clean": {
-      "type": "contact-form-clean"
+    "simple_contact": {
+      "type": "simple-contact"
     }
   },
   "order": [
-    "contact_form_clean"
+    "simple_contact"
   ]
 }
