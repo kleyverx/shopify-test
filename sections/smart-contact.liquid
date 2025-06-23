@@ -1,0 +1,392 @@
+{% comment %}
+  Contact Form - Versión limpia sin caché
+{% endcomment %}
+
+<div class="smart-contact smart-contact-{{ section.id }}">
+  <div class="smart-contact__container">
+    {% if section.settings.title != blank %}
+      <h2 class="smart-contact__title">{{ section.settings.title }}</h2>
+    {% endif %}
+    
+    {% if section.settings.description != blank %}
+      <div class="smart-contact__description">{{ section.settings.description }}</div>
+    {% endif %}
+
+    <div class="smart-contact__content">
+      {% if section.settings.form_url == blank %}
+        <div class="smart-contact__notice">
+          <p><strong>⚠️ Configuración requerida:</strong> Por favor configura la URL del formulario en el editor de temas.</p>
+        </div>
+      {% else %}
+        {% if section.settings.mode == 'iframe' %}
+          <div class="smart-contact__iframe-wrapper">
+            <iframe 
+              src="{{ section.settings.form_url }}" 
+              class="smart-contact__iframe"
+              title="Formulario de contacto"
+              frameborder="0"
+              loading="lazy">
+            </iframe>
+          </div>
+        {% else %}
+          <div class="smart-contact__link-section">
+            <div class="smart-contact__features">
+              <div class="smart-contact__feature">
+                <div class="smart-contact__feature-icon">🤖</div>
+                <div class="smart-contact__feature-text">Análisis inteligente</div>
+              </div>
+              <div class="smart-contact__feature">
+                <div class="smart-contact__feature-icon">⚡</div>
+                <div class="smart-contact__feature-text">Respuesta rápida</div>
+              </div>
+              <div class="smart-contact__feature">
+                <div class="smart-contact__feature-icon">📧</div>
+                <div class="smart-contact__feature-text">Email personalizado</div>
+              </div>
+            </div>
+            
+            <a href="{{ section.settings.form_url }}" 
+               class="smart-contact__button" 
+               {% if section.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+              <span class="smart-contact__button-text">
+                {% if section.settings.button_text != blank %}
+                  {{ section.settings.button_text }}
+                {% else %}
+                  Contactar ahora
+                {% endif %}
+              </span>
+              <span class="smart-contact__button-arrow">→</span>
+            </a>
+            
+            {% if section.settings.show_privacy %}
+              <p class="smart-contact__privacy">Tu información será tratada de forma confidencial.</p>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
+
+      <div class="smart-contact__info-section">
+        <div class="smart-contact__info-header">
+          <h3>Información de Contacto</h3>
+        </div>
+        
+        <div class="smart-contact__contact-list">
+          <div class="smart-contact__contact-item">
+            <div class="smart-contact__contact-icon">📧</div>
+            <a href="mailto:hola@papagayomedia.com" class="smart-contact__contact-link">
+              hola@papagayomedia.com
+            </a>
+          </div>
+          
+          <div class="smart-contact__contact-item">
+            <div class="smart-contact__contact-icon">📱</div>
+            <span class="smart-contact__contact-text">Contacto disponible por WhatsApp</span>
+          </div>
+          
+          <div class="smart-contact__contact-item">
+            <div class="smart-contact__contact-icon">📍</div>
+            <span class="smart-contact__contact-text">Ciudad de México, México</span>
+          </div>
+        </div>
+
+        <div class="smart-contact__social">
+          <h4>Síguenos en redes sociales</h4>
+          <p>Encuentra a Papagayo Media en todas las redes sociales para contenido exclusivo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .smart-contact {
+    padding: 60px 20px;
+    background: white;
+  }
+
+  .smart-contact__container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .smart-contact__title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 16px 0;
+    text-align: center;
+  }
+
+  .smart-contact__description {
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .smart-contact__content {
+    text-align: center;
+  }
+
+  .smart-contact__notice {
+    padding: 20px;
+    background: #f0f9ff;
+    border: 2px solid #0ea5e9;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+
+  .smart-contact__notice p {
+    margin: 0;
+    color: #0c4a6e;
+  }
+
+  .smart-contact__iframe-wrapper {
+    width: 100%;
+    height: 600px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .smart-contact__iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .smart-contact__link-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .smart-contact__features {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+
+  .smart-contact__feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    max-width: 120px;
+  }
+
+  .smart-contact__feature-icon {
+    font-size: 32px;
+  }
+
+  .smart-contact__feature-text {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .smart-contact__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 32px;
+    background: #0ea5e9;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: 600;
+    min-width: 220px;
+    justify-content: center;
+  }
+
+  .smart-contact__button:hover {
+    background: #0284c7;
+    color: white;
+    text-decoration: none;
+  }
+
+  .smart-contact__button-arrow {
+    font-size: 16px;
+  }
+
+  .smart-contact__privacy {
+    margin-top: 16px;
+    font-size: 12px;
+    color: #666;
+  }
+
+  .smart-contact__info-section {
+    margin-top: 24px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+  }
+
+  .smart-contact__info-header h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+  }
+
+  .smart-contact__contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .smart-contact__contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+
+  .smart-contact__contact-icon {
+    font-size: 16px;
+    min-width: 20px;
+  }
+
+  .smart-contact__contact-link {
+    color: #0ea5e9;
+    text-decoration: none;
+  }
+
+  .smart-contact__contact-link:hover {
+    color: #0284c7;
+    text-decoration: underline;
+  }
+
+  .smart-contact__contact-text {
+    color: #333;
+  }
+
+  .smart-contact__social {
+    text-align: center;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 16px;
+  }
+
+  .smart-contact__social h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .smart-contact__social p {
+    margin: 0;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+  }
+
+  @media screen and (max-width: 768px) {
+    .smart-contact {
+      padding: 40px 20px;
+    }
+
+    .smart-contact__title {
+      font-size: 24px;
+    }
+
+    .smart-contact__features {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .smart-contact__iframe-wrapper {
+      height: 500px;
+    }
+
+    .smart-contact__button {
+      font-size: 16px;
+      padding: 14px 28px;
+      min-width: 200px;
+    }
+
+    .smart-contact__info-section {
+      padding: 16px;
+      margin-top: 20px;
+    }
+
+    .smart-contact__contact-list {
+      gap: 10px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Smart Contact Form",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "¡Hablemos de tu proyecto!"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Descripción",
+      "default": "Cuéntanos sobre tu proyecto y te preparamos una propuesta personalizada."
+    },
+    {
+      "type": "url",
+      "id": "form_url",
+      "label": "URL del formulario",
+      "info": "URL del formulario externo"
+    },
+    {
+      "type": "select",
+      "id": "mode",
+      "label": "Modo",
+      "options": [
+        {
+          "value": "link",
+          "label": "Enlace"
+        },
+        {
+          "value": "iframe",
+          "label": "Integrado"
+        }
+      ],
+      "default": "link"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texto del botón",
+      "default": "Contactar"
+    },
+    {
+      "type": "checkbox",
+      "id": "new_tab",
+      "label": "Nueva pestaña",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_privacy",
+      "label": "Mostrar privacidad",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Form"
+    }
+  ]
+}
+{% endschema %}

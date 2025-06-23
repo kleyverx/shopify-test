@@ -1,0 +1,55 @@
+{
+  "sections": {
+    "hero_carousel": {
+      "type": "hero-carousel",
+      "blocks": {
+        "16406323754b7d4f8a": {
+          "type": "slide",
+          "settings": {
+            "subtitle": "Tecnología",
+            "title": "Avanzada",
+            "description": "Desarrollamos con las últimas tecnologías. Utilizamos herramientas de vanguardia para crear soluciones digitales de alto rendimiento.",
+            "button_label": "Conocer Servicios",
+            "button_link": "/pages/services"
+          }
+        },
+        "16406323754b7d4f8b": {
+          "type": "slide",
+          "settings": {
+            "subtitle": "Desarrollo",
+            "title": "Innovador",
+            "description": "Creamos experiencias digitales únicas que conectan con tu audiencia y generan resultados excepcionales.",
+            "button_label": "Ver Portfolio",
+            "button_link": "/pages/portfolio"
+          }
+        },
+        "16406323754b7d4f8c": {
+          "type": "slide",
+          "settings": {
+            "subtitle": "Soluciones",
+            "title": "Inteligentes",
+            "description": "Implementamos estrategias digitales que impulsan el crecimiento de tu negocio con tecnología de punta.",
+            "button_label": "Contactanos",
+            "button_link": "/pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "16406323754b7d4f8a",
+        "16406323754b7d4f8b",
+        "16406323754b7d4f8c"
+      ],
+      "settings": {
+        "content_width": 1200,
+        "slide_height": 500,
+        "enable_autoplay": true,
+        "autoplay_delay": 5000,
+        "background_color": "#f8f9fa",
+        "slide_background": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "hero_carousel"
+  ]
+}

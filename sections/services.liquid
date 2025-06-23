@@ -1,0 +1,494 @@
+{% comment %}
+  @name Services
+  @description A section to showcase services offered by your business
+  @version 1.0
+{% endcomment %}
+
+<div class="services" id="Services-{{ section.id }}">
+  <div class="services__header">
+    {% if section.settings.title != blank %}
+      <h2 class="services__title">{{ section.settings.title }}</h2>
+    {% endif %}
+    {% if section.settings.description != blank %}
+      <div class="services__description">{{ section.settings.description }}</div>
+    {% endif %}
+  </div>
+  
+  <div class="services__grid" 
+    style="--columns-mobile: {{ section.settings.columns_mobile }};
+           --columns-desktop: {{ section.settings.columns_desktop }};
+           --gap: {{ section.settings.grid_gap }}px;">
+    {% for block in section.blocks %}
+      <div class="services__item{% if section.settings.card_style == 'bordered' %} services__item--bordered{% endif %}" {{ block.shopify_attributes }}>
+        <div class="services__item-inner">
+          {% if block.settings.icon != blank %}
+            <div class="services__icon-wrapper">
+              {% render 'image', 
+                image: block.settings.icon,
+                width: 80, 
+                height: 80,
+                class: 'services__icon'
+              %}
+            </div>
+          {% elsif block.settings.icon_name != blank %}
+            <div class="services__icon-wrapper services__icon-wrapper--svg">
+              {% case block.settings.icon_name %}
+                {% when 'design' %}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+                {% when 'development' %}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                {% when 'marketing' %}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-6"></path></svg>
+                {% when 'consultation' %}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                {% when 'support' %}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                {% when 'analytics' %}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>
+                {% else %}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              {% endcase %}
+            </div>
+          {% endif %}
+          
+          <div class="services__content">
+            {% if block.settings.title != blank %}
+              <h3 class="services__item-title">{{ block.settings.title }}</h3>
+            {% endif %}
+            
+            {% if block.settings.description != blank %}
+              <div class="services__item-description">{{ block.settings.description }}</div>
+            {% endif %}
+            
+            {% if block.settings.features != blank %}
+              <ul class="services__features">
+                {% assign features = block.settings.features | split: ',' %}
+                {% for feature in features %}
+                  <li class="services__feature">{{ feature | strip }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+            
+            {% if block.settings.button_text != blank and block.settings.button_link != blank %}
+              <a href="{{ block.settings.button_link }}" class="services__button{% if block.settings.button_style == 'link' %} services__button--link{% endif %}">
+                {{ block.settings.button_text }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  
+  {% if section.blocks.size == 0 %}
+    <div class="services__placeholder">
+      <p>Add services using the customize panel</p>
+    </div>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+.services {
+  padding: var(--section-padding-top, 60px) var(--section-padding-right, 20px) var(--section-padding-bottom, 60px) var(--section-padding-left, 20px);
+  max-width: var(--page-width, 1200px);
+  margin: 0 auto;
+}
+
+.services__header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.services__title {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: var(--heading-scale-medium, 24px);
+}
+
+.services__description {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--columns-mobile, 1), 1fr);
+  gap: var(--gap, 20px);
+}
+
+@media screen and (min-width: 750px) {
+  .services__grid {
+    grid-template-columns: repeat(var(--columns-desktop, 3), 1fr);
+  }
+}
+
+.services__item {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: var(--card-corner-radius, 8px);
+  overflow: hidden;
+  background-color: var(--card-background, #ffffff);
+  box-shadow: var(--card-shadow, 0 4px 6px rgba(0, 0, 0, 0.05));
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.services__item--bordered {
+  border: 1px solid var(--color-border, #e1e1e1);
+  box-shadow: none;
+}
+
+.services__item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-shadow-hover, 0 10px 15px rgba(0, 0, 0, 0.08));
+}
+
+.services__item--bordered:hover {
+  border-color: var(--color-primary, #000000);
+}
+
+.services__item-inner {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.services__icon-wrapper {
+  margin-bottom: 20px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--icon-border-radius, 50%);
+  background-color: var(--icon-background, rgba(0, 0, 0, 0.05));
+  color: var(--icon-color, #333333);
+}
+
+.services__icon-wrapper--svg {
+  padding: 15px;
+}
+
+.services__icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.services__content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.services__item-title {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: var(--heading-scale-small, 18px);
+}
+
+.services__item-description {
+  margin-bottom: 15px;
+  flex-grow: 1;
+  font-size: var(--font-size-base, 14px);
+}
+
+.services__features {
+  margin: 15px 0;
+  padding-left: 20px;
+}
+
+.services__feature {
+  margin-bottom: 8px;
+}
+
+.services__button {
+  display: inline-block;
+  margin-top: auto;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: var(--button-border-radius, 4px);
+  background-color: var(--button-background, #000000);
+  color: var(--button-text-color, #ffffff);
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-align: center;
+}
+
+.services__button:hover {
+  background-color: var(--button-background-hover, #333333);
+}
+
+.services__button--link {
+  background: none;
+  padding: 0;
+  color: var(--color-link, #000000);
+  text-decoration: underline;
+}
+
+.services__button--link:hover {
+  background: none;
+  color: var(--color-link-hover, #666666);
+}
+
+.services__placeholder {
+  border: 2px dashed #ddd;
+  border-radius: 4px;
+  padding: 40px 20px;
+  text-align: center;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Services",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Nuestros Servicios"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Descubre nuestra amplia gama de servicios profesionales diseñados para satisfacer tus necesidades</p>"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card style",
+      "options": [
+        {
+          "value": "shadow",
+          "label": "Shadow"
+        },
+        {
+          "value": "bordered",
+          "label": "Bordered"
+        }
+      ],
+      "default": "shadow"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Space between services",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service_item",
+      "name": "Service",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Service name",
+          "default": "Nombre del servicio"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Descripción breve del servicio que ofreces a tus clientes.</p>"
+        },
+        {
+          "type": "text",
+          "id": "features",
+          "label": "Features",
+          "info": "Separate with commas",
+          "placeholder": "Feature 1, Feature 2, Feature 3",
+          "default": "Característica 1, Característica 2, Característica 3"
+        },
+        {
+          "type": "header",
+          "content": "Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Custom icon"
+        },
+        {
+          "type": "select",
+          "id": "icon_name",
+          "label": "Built-in icon",
+          "info": "Used if no custom icon is uploaded",
+          "options": [
+            {
+              "value": "",
+              "label": "None"
+            },
+            {
+              "value": "design",
+              "label": "Design"
+            },
+            {
+              "value": "development",
+              "label": "Development"
+            },
+            {
+              "value": "marketing",
+              "label": "Marketing"
+            },
+            {
+              "value": "consultation",
+              "label": "Consultation"
+            },
+            {
+              "value": "support",
+              "label": "Support"
+            },
+            {
+              "value": "analytics",
+              "label": "Analytics"
+            }
+          ],
+          "default": "design"
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Más información"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "button",
+              "label": "Button"
+            },
+            {
+              "value": "link",
+              "label": "Text link"
+            }
+          ],
+          "default": "button"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Services",
+      "blocks": [
+        {
+          "type": "service_item",
+          "settings": {
+            "title": "Diseño Web",
+            "description": "<p>Creamos sitios web modernos y atractivos que destacan tu marca y optimizan la experiencia del usuario.</p>",
+            "icon_name": "design"
+          }
+        },
+        {
+          "type": "service_item",
+          "settings": {
+            "title": "Desarrollo de Apps",
+            "description": "<p>Desarrollamos aplicaciones personalizadas que se adaptan perfectamente a las necesidades de tu negocio.</p>",
+            "icon_name": "development"
+          }
+        },
+        {
+          "type": "service_item",
+          "settings": {
+            "title": "Marketing Digital",
+            "description": "<p>Estrategias efectivas de marketing digital para aumentar tu visibilidad online y atraer más clientes.</p>",
+            "icon_name": "marketing"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

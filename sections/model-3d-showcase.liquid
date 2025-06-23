@@ -1,0 +1,1078 @@
+{% comment %}
+  @name 3D Model Showcase
+  @description A section to display a 3D model with an interactive viewer, background banner, title and description
+  @version 1.0
+  
+  INSTRUCCIONES DE USO:
+  1. Subir archivos 3D a Shopify:
+     - Accede a tu panel de administración de Shopify
+     - Ve a Ajustes > Archivos
+     - Haz clic en "Subir archivos" y selecciona tu archivo 3D (.glb o .gltf)
+     - Una vez subido, haz clic en el archivo y copia la URL completa
+     - La URL debe empezar con https://cdn.shopify.com/
+     - Pega la URL en el campo "URL del modelo 3D" en la configuración de esta sección
+     
+     Ejemplo de URL correcta: https://cdn.shopify.com/3d/models/401f3cae0ec0b726/Astronaut.glb
+  
+  2. Para un rendimiento óptimo:
+     - Los archivos GLB funcionan mejor que GLTF
+     - Optimiza tus modelos 3D para web (menos de 5MB si es posible)
+     - Usa texturas de resolución moderada (1024x1024 o menos)
+     - Elimina geometría innecesaria del modelo
+  
+  3. Solución de problemas:
+     - Si el modelo no carga, verifica que la URL sea accesible públicamente
+     - Confirma que el formato del archivo es compatible (.glb o .gltf)
+     - Asegúrate de que el archivo no exceda los límites de tamaño de Shopify
+{% endcomment %}
+
+<div class="model3d-showcase" id="Model3DShowcase-{{ section.id }}">
+  <div class="model3d-banner" style="
+    --banner-height-mobile: {{ section.settings.height_mobile }}px;
+    --banner-height-desktop: {{ section.settings.height_desktop }}px;
+    --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --text-alignment: {{ section.settings.text_alignment }};
+    --text-color: {{ section.settings.text_color }};
+  ">
+    {% if section.settings.background_image != blank %}
+      <div class="model3d-banner__background">
+        {% render 'image', 
+          image: section.settings.background_image,
+          width: 2000, 
+          height: section.settings.height_desktop,
+          class: 'model3d-banner__image'
+        %}
+        
+        {% if section.settings.overlay_color != "rgba(0,0,0,0)" %}
+          <div class="model3d-banner__overlay" style="background-color: {{ section.settings.overlay_color }}"></div>
+        {% endif %}
+      </div>
+    {% endif %}
+    
+    <div class="model3d-content">
+      <div class="model3d-header">
+        {% if section.settings.title != blank %}
+          <h2 class="model3d-title">{{ section.settings.title }}</h2>
+        {% endif %}
+        
+        {% if section.settings.description != blank %}
+          <div class="model3d-description">{{ section.settings.description }}</div>
+        {% endif %}
+      </div>
+      
+      <div class="model3d-viewer-container">
+        {% if section.settings.model_3d != blank or section.settings.use_sample_model %}
+          {% comment %}Añadimos soporte para CORS y aseguramos que la URL sea accesible{% endcomment %}
+          {% if section.settings.use_sample_model %}
+            {% assign model_url = "https://modelviewer.dev/shared-assets/models/Astronaut.glb" %}
+          {% else %}
+            {% assign model_url = section.settings.model_3d %}
+          {% endif %}
+          
+          <model-viewer 
+            class="model3d-viewer"
+            src="{{ model_url }}"
+            alt="{{ section.settings.model_alt_text | escape }}"
+            loading="eager"
+            reveal="auto"
+            {% if section.settings.enable_autoplay %}autoplay{% endif %}
+            {% if section.settings.enable_autorotate %}auto-rotate{% endif %}
+            {% if section.settings.enable_zoom %}enable-zoom{% endif %}
+            camera-controls
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            poster="{% if section.settings.model_poster != blank %}{{ section.settings.model_poster | image_url: width: 1000 }}{% endif %}"
+            shadow-intensity="{{ section.settings.shadow_intensity | divided_by: 100.0 }}"
+            exposure="{{ section.settings.exposure | divided_by: 100.0 }}"
+            environment-image="{% if section.settings.environment_image != blank %}{{ section.settings.environment_image }}{% endif %}"
+            style="
+              --progress-bar-color: {{ section.settings.progress_bar_color }};
+              --progress-bar-height: {{ section.settings.progress_bar_height }}px;
+              background-color: {{ section.settings.viewer_background }};
+              height: {{ section.settings.viewer_height }}px;
+            "
+            crossorigin="anonymous"
+          >
+            <button slot="ar-button" class="model3d-ar-button">
+              Ver en tu espacio
+            </button>
+            <div class="model3d-progress-bar" slot="progress-bar"></div>
+            <div class="model3d-error" slot="error">
+              Error al cargar el modelo 3D. Por favor verifica la URL e intenta nuevamente.<br>
+              <span class="model3d-error-details">Asegúrate de que la URL es accesible públicamente y que el archivo es un modelo 3D válido (.glb o .gltf).</span>
+            </div>
+            <div class="model3d-loading" slot="loading">
+              Cargando modelo 3D...
+            </div>
+            {% if section.settings.use_sample_model %}
+              <div class="model3d-sample-notice">
+                Usando modelo de ejemplo. Para usar tu propio modelo, desactiva la opción "Usar modelo de ejemplo" en la configuración.
+              </div>
+            {% endif %}
+            
+            <!-- Instrucciones de control para el modelo 3D (panel flotante) -->
+            <div class="model3d-viewer-controls">
+              <div class="model3d-control-panel">
+                <div class="model3d-control-panel-header">
+                  <span>Controles 3D</span>
+                  <button class="model3d-control-panel-toggle" aria-label="Minimizar panel de controles">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                  </button>
+                </div>
+                <div class="model3d-control-panel-body">
+                  <div class="model3d-viewer-control model3d-viewer-control--drag">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none">
+                      <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                      <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                      <path d="M2 2l7.586 7.586"></path>
+                      <circle cx="11" cy="11" r="2"></circle>
+                    </svg>
+                    <span>Clic + arrastrar para rotar</span>
+                  </div>
+                  <div class="model3d-viewer-control model3d-viewer-control--zoom">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      <line x1="11" y1="8" x2="11" y2="14"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                    <span>Rueda del mouse para zoom</span>
+                  </div>
+                  <div class="model3d-viewer-control model3d-viewer-control--ar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <span>Botón AR para ver en tu espacio</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Indicadores visuales para rotar el modelo -->
+            <div class="model3d-rotation-indicator">
+              <div class="model3d-rotation-arrow model3d-rotation-arrow--left">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 8 8 12 12 16"/>
+                  <line x1="16" y1="12" x2="8" y2="12"/>
+                </svg>
+              </div>
+              <div class="model3d-rotation-arrow model3d-rotation-arrow--right">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 16 16 12 12 8"/>
+                  <line x1="8" y1="12" x2="16" y2="12"/>
+                </svg>
+              </div>
+            </div>
+            
+            <!-- Tutorial inicial para interacción con el modelo -->
+            <div class="model3d-tutorial">
+              <div class="model3d-tutorial-step model3d-tutorial-step--drag">
+                <div class="model3d-tutorial-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+                    <line x1="16" y1="8" x2="2" y2="22"></line>
+                    <line x1="17.5" y1="15" x2="9" y2="15"></line>
+                  </svg>
+                </div>
+                <p>Arrastra para rotar el modelo</p>
+                <button class="model3d-tutorial-next">Entendido</button>
+              </div>
+              <div class="model3d-tutorial-step model3d-tutorial-step--zoom" style="display: none;">
+                <div class="model3d-tutorial-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <line x1="11" y1="8" x2="11" y2="14"></line>
+                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                  </svg>
+                </div>
+                <p>Usa la rueda del mouse para acercar y alejar</p>
+                <button class="model3d-tutorial-done">Comenzar</button>
+              </div>
+            </div>
+          </model-viewer>
+        {% else %}
+          <div class="model3d-placeholder">
+            <div class="model3d-placeholder-content">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+              <p>Para mostrar un modelo 3D:</p>
+              <ol class="model3d-placeholder-instructions">
+                <li>Ve a <strong>Ajustes > Archivos</strong> en el panel de administración de Shopify</li>
+                <li>Haz clic en <strong>Subir archivos</strong> y selecciona tu archivo 3D (.glb o .gltf)</li>
+                <li>Una vez subido, haz clic en el archivo y copia la URL completa (comienza con <code>https://cdn.shopify.com/</code>)</li>
+                <li>Pega la URL en el campo <strong>URL del modelo 3D</strong> en la configuración de esta sección</li>
+              </ol>
+              <p class="model3d-placeholder-example">Ejemplo de URL: <code>https://cdn.shopify.com/3d/models/401f3cae0ec0b726/Astronaut.glb</code></p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+      
+      {% if section.settings.show_controls_help %}
+        <div class="model3d-controls-help">
+          <div class="model3d-controls-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="16"/>
+              <line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
+            <span>Zoom</span>
+          </div>
+          <div class="model3d-controls-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 16 16 12 12 8"/>
+              <line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
+            <span>Rotar</span>
+          </div>
+          <div class="model3d-controls-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>Ver en AR</span>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% comment %}
+  Nota: Para que esta sección funcione correctamente, debes incluir la biblioteca model-viewer en el archivo theme.liquid
+  Agrega la siguiente línea dentro de la etiqueta <head>:
+  <script type="module" src="{{ 'model-viewer.min.js' | asset_url }}"></script>
+  
+  Y sube el archivo model-viewer.min.js a la carpeta assets de tu tema.
+  Puedes descargar este archivo desde: https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js
+{% endcomment %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const modelViewer = document.querySelector('#Model3DShowcase-{{ section.id }} model-viewer');
+    
+    if (modelViewer) {
+      // Monitorizar eventos de carga y error
+      modelViewer.addEventListener('load', function() {
+        console.log('Modelo 3D cargado correctamente:', modelViewer.src);
+        // Iniciar tutorial después de que el modelo se haya cargado
+        setTimeout(showTutorial, 1500);
+      });
+      
+      modelViewer.addEventListener('error', function(error) {
+        console.error('Error al cargar el modelo 3D:', error);
+        console.log('URL del modelo:', modelViewer.src);
+        
+        // Verificar si estamos usando la URL de Shopify
+        if (modelViewer.src.includes('cdn.shopify.com') && !document.querySelector('#Model3DShowcase-{{ section.id }} .model3d-sample-notice')) {
+          // Intentar cargar el modelo de ejemplo automáticamente
+          modelViewer.src = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
+          
+          // Añadir mensaje de aviso
+          const errorNotice = document.createElement('div');
+          errorNotice.className = 'model3d-error-notice';
+          errorNotice.innerHTML = 'Error con la URL de Shopify. Usando modelo de ejemplo automáticamente.';
+          modelViewer.appendChild(errorNotice);
+        }
+      });
+      
+      // Control de panel flotante
+      const controlPanel = document.querySelector('#Model3DShowcase-{{ section.id }} .model3d-control-panel');
+      const panelToggle = document.querySelector('#Model3DShowcase-{{ section.id }} .model3d-control-panel-toggle');
+      
+      if (panelToggle && controlPanel) {
+        panelToggle.addEventListener('click', function() {
+          controlPanel.classList.toggle('minimized');
+          
+          // Actualizar atributo aria-label
+          if (controlPanel.classList.contains('minimized')) {
+            panelToggle.setAttribute('aria-label', 'Expandir panel de controles');
+          } else {
+            panelToggle.setAttribute('aria-label', 'Minimizar panel de controles');
+          }
+        });
+      }
+      
+      // Tutorial interactivo
+      function showTutorial() {
+        const tutorial = document.querySelector('#Model3DShowcase-{{ section.id }} .model3d-tutorial');
+        if (tutorial && localStorage.getItem('model3dTutorialShown') !== 'true') {
+          tutorial.style.display = 'flex';
+          
+          // Botón siguiente en el tutorial
+          const nextButton = document.querySelector('#Model3DShowcase-{{ section.id }} .model3d-tutorial-next');
+          if (nextButton) {
+            nextButton.addEventListener('click', function() {
+              document.querySelector('#Model3DShowcase-{{ section.id }} .model3d-tutorial-step--drag').style.display = 'none';
+              document.querySelector('#Model3DShowcase-{{ section.id }} .model3d-tutorial-step--zoom').style.display = 'flex';
+            });
+          }
+          
+          // Botón finalizar tutorial
+          const doneButton = document.querySelector('#Model3DShowcase-{{ section.id }} .model3d-tutorial-done');
+          if (doneButton) {
+            doneButton.addEventListener('click', function() {
+              tutorial.style.display = 'none';
+              localStorage.setItem('model3dTutorialShown', 'true');
+              
+              // Mostrar indicadores de rotación
+              setTimeout(function() {
+                const rotationIndicator = document.querySelector('#Model3DShowcase-{{ section.id }} .model3d-rotation-indicator');
+                if (rotationIndicator) {
+                  rotationIndicator.style.opacity = '0.7';
+                  setTimeout(function() {
+                    rotationIndicator.style.opacity = '0';
+                  }, 3000);
+                }
+              }, 500);
+            });
+          }
+        } else if (tutorial) {
+          tutorial.style.display = 'none';
+        }
+      }
+      
+      // Resetear tutorial con doble clic en el visor (para pruebas)
+      modelViewer.addEventListener('dblclick', function(event) {
+        // Evitar el comportamiento predeterminado de zoom
+        event.stopPropagation();
+        // Resetear el estado del tutorial
+        localStorage.removeItem('model3dTutorialShown');
+        showTutorial();
+      });
+      
+      // Ayuda contextual: mostrar indicadores de rotación cuando el usuario está inactivo
+      let lastInteractionTime = Date.now();
+      const rotationIndicator = document.querySelector('#Model3DShowcase-{{ section.id }} .model3d-rotation-indicator');
+      
+      modelViewer.addEventListener('mousedown', function() {
+        lastInteractionTime = Date.now();
+        if (rotationIndicator) rotationIndicator.style.opacity = '0';
+      });
+      
+      modelViewer.addEventListener('touchstart', function() {
+        lastInteractionTime = Date.now();
+        if (rotationIndicator) rotationIndicator.style.opacity = '0';
+      });
+      
+      // Verificar inactividad cada 5 segundos
+      const inactivityCheckInterval = setInterval(function() {
+        const now = Date.now();
+        const inactiveTime = now - lastInteractionTime;
+        
+        // Mostrar indicadores después de 10 segundos de inactividad
+        if (inactiveTime > 10000 && rotationIndicator) {
+          rotationIndicator.style.opacity = '0.7';
+          setTimeout(function() {
+            rotationIndicator.style.opacity = '0';
+          }, 3000);
+          lastInteractionTime = now; // Resetear el tiempo para que no se muestre constantemente
+        }
+      }, 5000);
+      
+      // Limpiar el intervalo cuando se elimina el componente
+      document.addEventListener('beforeunload', function() {
+        clearInterval(inactivityCheckInterval);
+      });
+    }
+  });
+</script>
+
+{% stylesheet %}
+.model3d-showcase {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.model3d-banner {
+  position: relative;
+  min-height: var(--banner-height-mobile);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  text-align: var(--text-alignment);
+}
+
+.model3d-banner__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.model3d-banner__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.model3d-banner__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: var(--overlay-opacity);
+  z-index: 2;
+}
+
+.model3d-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.model3d-header {
+  margin-bottom: 30px;
+}
+
+.model3d-title {
+  margin: 0 0 15px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.model3d-description {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.model3d-viewer-container {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.model3d-viewer {
+  width: 100%;
+  border-radius: 8px;
+  --progress-bar-color: var(--progress-bar-color);
+  --progress-bar-height: var(--progress-bar-height);
+}
+
+.model3d-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  height: 400px;
+  border-radius: 8px;
+}
+
+.model3d-placeholder-content {
+  text-align: center;
+  padding: 20px;
+  color: #555;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.model3d-placeholder-content svg {
+  margin-bottom: 20px;
+  width: 60px;
+  height: 60px;
+  color: #777;
+}
+
+.model3d-placeholder-instructions {
+  text-align: left;
+  margin-top: 15px;
+  margin-bottom: 0;
+  padding-left: 30px;
+}
+
+.model3d-placeholder-instructions li {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.model3d-placeholder-example {
+  margin-top: 15px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.model3d-placeholder-example code {
+  background-color: #f5f5f5;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.9em;
+  word-break: break-all;
+}
+
+.model3d-ar-button {
+  background-color: #fff;
+  border: none;
+  border-radius: 4px;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  z-index: 10;
+}
+
+.model3d-ar-button:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.model3d-progress-bar {
+  height: var(--progress-bar-height);
+  background-color: var(--progress-bar-color);
+  width: 0%;
+  transition: width 0.3s;
+}
+
+.model3d-error {
+  background-color: rgba(255, 82, 82, 0.1);
+  color: #f44336;
+  padding: 15px;
+  text-align: center;
+  border-radius: 4px;
+  font-weight: 500;
+  margin: 20px;
+}
+
+.model3d-error-details {
+  display: block;
+  font-size: 0.9em;
+  font-weight: normal;
+  margin-top: 8px;
+  color: #666;
+}
+
+.model3d-loading {
+  background-color: rgba(33, 150, 243, 0.1);
+  color: #2196f3;
+  padding: 15px;
+  text-align: center;
+  border-radius: 4px;
+  font-weight: 500;
+  margin: 20px;
+}
+
+.model3d-sample-notice {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: #ff9800;
+  padding: 10px;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin: 10px 20px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.model3d-error-notice {
+  background-color: rgba(255, 82, 82, 0.1);
+  color: #f44336;
+  padding: 10px;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin: 10px 20px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.model3d-controls-help {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.model3d-controls-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+}
+
+.model3d-controls-item svg {
+  margin-bottom: 8px;
+  color: currentColor;
+}
+
+/* Estilos del panel de control flotante */
+.model3d-viewer-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.model3d-control-panel {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  width: 250px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.model3d-control-panel.minimized {
+  transform: translateY(-90%);
+}
+
+.model3d-control-panel-header {
+  padding: 10px 15px;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.model3d-control-panel-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.model3d-control-panel-toggle svg {
+  transition: transform 0.3s;
+}
+
+.minimized .model3d-control-panel-toggle svg {
+  transform: rotate(180deg);
+}
+
+.model3d-control-panel-body {
+  padding: 10px;
+  transition: height 0.3s ease;
+}
+
+.minimized .model3d-control-panel-body {
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.model3d-viewer-control {
+  display: flex;
+  align-items: center;
+  padding: 8px 5px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.model3d-viewer-control:last-child {
+  border-bottom: none;
+}
+
+.model3d-viewer-control svg {
+  flex: 0 0 auto;
+  margin-right: 10px;
+  color: #555;
+}
+
+/* Indicadores de rotación */
+.model3d-rotation-indicator {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 5;
+}
+
+model-viewer:hover .model3d-rotation-indicator {
+  opacity: 0.7;
+}
+
+.model3d-rotation-arrow {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  animation: pulse 2s infinite;
+}
+
+.model3d-rotation-arrow--left {
+  animation-delay: 0s;
+}
+
+.model3d-rotation-arrow--right {
+  animation-delay: 0.5s;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+  
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+/* Tutorial de interacción */
+.model3d-tutorial {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.model3d-tutorial-step {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 300px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.model3d-tutorial-icon {
+  margin-bottom: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.model3d-tutorial-next,
+.model3d-tutorial-done {
+  background-color: #4285F4;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.model3d-tutorial-next:hover,
+.model3d-tutorial-done:hover {
+  background-color: #3367d6;
+}
+
+@media screen and (min-width: 750px) {
+  .model3d-banner {
+    min-height: var(--banner-height-desktop);
+  }
+  
+  .model3d-title {
+    font-size: 40px;
+  }
+  
+  .model3d-description {
+    font-size: 18px;
+  }
+  
+  .model3d-content {
+    padding: 50px 30px;
+  }
+  
+  /* Mejoramos controles en escritorio */
+  .model3d-control-panel {
+    width: 280px;
+  }
+  
+  .model3d-rotation-indicator {
+    padding: 0 40px;
+  }
+  
+  .model3d-rotation-arrow {
+    width: 50px;
+    height: 50px;
+  }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "3D Model Showcase",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contenido"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Explorador de Modelo 3D"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Descripción",
+      "default": "<p>Interactúa con nuestro modelo 3D. Puedes rotar, hacer zoom y ver el modelo desde todos los ángulos.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Modelo 3D"
+    },
+    {
+      "type": "paragraph",
+      "content": "Para usar un modelo 3D: 1) Ve a Ajustes > Archivos. 2) Haz clic en 'Subir archivos' y selecciona tu archivo 3D (.glb o .gltf). 3) Una vez subido, haz clic en el archivo y copia la URL completa (debería comenzar con https://cdn.shopify.com/). 4) Pega la URL en el campo 'URL del modelo 3D' a continuación."
+    },
+    {
+      "type": "url",
+      "id": "model_3d",
+      "label": "URL del modelo 3D",
+      "info": "Pega aquí la URL del archivo 3D que subiste a la biblioteca de archivos"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_sample_model",
+      "label": "Usar modelo de ejemplo",
+      "default": false,
+      "info": "Activa esta opción para usar un modelo 3D de ejemplo si tienes problemas con la carga de tu propio modelo"
+    },
+    {
+      "type": "text",
+      "id": "model_alt_text",
+      "label": "Texto alternativo",
+      "default": "Modelo 3D interactivo"
+    },
+    {
+      "type": "image_picker",
+      "id": "model_poster",
+      "label": "Imagen de portada (mostrada mientras el modelo carga)"
+    },
+    {
+      "type": "range",
+      "id": "viewer_height",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "default": 500,
+      "unit": "px",
+      "label": "Altura del visor"
+    },
+    {
+      "type": "color",
+      "id": "viewer_background",
+      "label": "Color de fondo del visor",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_color",
+      "label": "Color de la barra de progreso",
+      "default": "#4285F4"
+    },
+    {
+      "type": "range",
+      "id": "progress_bar_height",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 4,
+      "unit": "px",
+      "label": "Altura de la barra de progreso"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Iniciar automáticamente",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autorotate",
+      "label": "Rotar automáticamente",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_zoom",
+      "label": "Permitir zoom",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls_help",
+      "label": "Mostrar ayuda de controles",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "shadow_intensity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "%",
+      "label": "Intensidad de sombras"
+    },
+    {
+      "type": "range",
+      "id": "exposure",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 100,
+      "unit": "%",
+      "label": "Exposición de luz"
+    },
+    {
+      "type": "paragraph",
+      "content": "Las imágenes de entorno HDR mejoran la iluminación de tu modelo 3D. Usa el mismo proceso de subida que para el modelo 3D."
+    },
+    {
+      "type": "url",
+      "id": "environment_image",
+      "label": "URL de imagen de entorno (HDR)",
+      "info": "Opcional: Pega aquí la URL de una imagen HDR subida a la biblioteca de archivos"
+    },
+    {
+      "type": "header",
+      "content": "Banner de fondo"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Imagen de fondo"
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "min": 400,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "label": "Altura mínima (móvil)",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "min": 500,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "label": "Altura mínima (escritorio)",
+      "default": 800
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Color de superposición",
+      "default": "rgba(0,0,0,0.4)"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Opacidad de superposición",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alineación del texto",
+      "options": [
+        {
+          "value": "left",
+          "label": "Izquierda"
+        },
+        {
+          "value": "center",
+          "label": "Centro"
+        },
+        {
+          "value": "right",
+          "label": "Derecha"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Color del texto",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "3D Model Showcase",
+      "settings": {
+        "title": "Explorador de Modelo 3D",
+        "description": "<p>Interactúa con nuestro modelo 3D. Puedes rotar, hacer zoom y ver el modelo desde todos los ángulos.</p>",
+        "enable_autoplay": true,
+        "enable_autorotate": true,
+        "enable_zoom": true,
+        "show_controls_help": true
+      }
+    }
+  ]
+}
+{% endschema %}

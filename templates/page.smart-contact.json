@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "smart_contact_form": {
+      "type": "smart-contact",
+      "settings": {
+        "title": "¡Hablemos de tu proyecto!",
+        "description": "Cuéntanos sobre tu proyecto y te preparamos una propuesta personalizada.",
+        "form_url": "",
+        "mode": "link",
+        "button_text": "Contactar ahora",
+        "new_tab": true,
+        "show_privacy": true
+      }
+    }
+  },
+  "order": [
+    "smart_contact_form"
+  ]
+}

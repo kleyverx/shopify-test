@@ -1,0 +1,446 @@
+{% comment %}
+  @name Trusted Brands
+  @description Un carrusel infinito de logotipos de marcas que han confiado en nosotros
+  @version 2.0
+{% endcomment %}
+
+<div class="trusted-brands" id="TrustedBrands-{{ section.id }}">
+  <div class="trusted-brands__container" style="
+    --content-width: {{ section.settings.content_width }}px;
+    --logo-height: {{ section.settings.logo_height }}px;
+    --logo-spacing: {{ section.settings.logo_spacing }}px;
+    --scroll-speed: {{ section.settings.scroll_speed }}s;
+    --background-color: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }};
+  ">
+    {% if section.settings.title != blank %}
+      <h2 class="trusted-brands__title">{{ section.settings.title }}</h2>
+    {% else %}
+      <h2 class="trusted-brands__title">{{ 'trusted_brands.title' | t }}</h2>
+    {% endif %}
+    
+    {% if section.settings.subtitle != blank %}
+      <div class="trusted-brands__subtitle">{{ section.settings.subtitle }}</div>
+    {% else %}
+      <div class="trusted-brands__subtitle">{{ 'trusted_brands.subtitle' | t }}</div>
+    {% endif %}
+    
+    <div class="trusted-brands__scroll-container">
+      {% if section.blocks.size > 0 %}
+        <div class="trusted-brands__marquee">
+          <div class="trusted-brands__marquee-inner">
+            <div class="trusted-brands__logo-list" aria-hidden="false">
+              {% for block in section.blocks %}
+                {% if block.type == 'brand_logo' %}
+                  <div class="trusted-brands__logo-item" {{ block.shopify_attributes }}>
+                    {% if block.settings.brand_url != blank %}
+                      <a href="{{ block.settings.brand_url }}" class="trusted-brands__logo-link" {% if block.settings.open_in_new_tab %}target="_blank" rel="noopener"{% endif %}>
+                    {% endif %}
+                    
+                    {% if block.settings.logo_image != blank %}
+                      <div class="trusted-brands__logo-wrapper">
+                        {% render 'image', 
+                          image: block.settings.logo_image,
+                          width: 200,
+                          height: section.settings.logo_height,
+                          class: 'trusted-brands__logo',
+                          alt: block.settings.logo_image.alt | default: block.settings.brand_name
+                        %}
+                      </div>
+                    {% else %}
+                      <div class="trusted-brands__logo-placeholder">
+                        {{ block.settings.brand_name }}
+                      </div>
+                    {% endif %}
+                    
+                    {% if block.settings.brand_url != blank %}
+                      </a>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            
+            <!-- Duplicamos los logos para efecto de carrusel infinito -->
+            <div class="trusted-brands__logo-list" aria-hidden="true">
+              {% for block in section.blocks %}
+                {% if block.type == 'brand_logo' %}
+                  <div class="trusted-brands__logo-item">
+                    {% if block.settings.brand_url != blank %}
+                      <a href="{{ block.settings.brand_url }}" class="trusted-brands__logo-link" {% if block.settings.open_in_new_tab %}target="_blank" rel="noopener"{% endif %}>
+                    {% endif %}
+                    
+                    {% if block.settings.logo_image != blank %}
+                      <div class="trusted-brands__logo-wrapper">
+                        {% render 'image', 
+                          image: block.settings.logo_image,
+                          width: 200,
+                          height: section.settings.logo_height,
+                          class: 'trusted-brands__logo',
+                          alt: block.settings.logo_image.alt | default: block.settings.brand_name
+                        %}
+                      </div>
+                    {% else %}
+                      <div class="trusted-brands__logo-placeholder">
+                        {{ block.settings.brand_name }}
+                      </div>
+                    {% endif %}
+                    
+                    {% if block.settings.brand_url != blank %}
+                      </a>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="trusted-brands__placeholder">
+          <p>{{ 'trusted_brands.add_logos' | t }}</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+.trusted-brands {
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 40px 0;
+}
+
+.trusted-brands__container {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.trusted-brands__title {
+  text-align: center;
+  margin: 0 0 10px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.trusted-brands__subtitle {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+.trusted-brands__scroll-container {
+  width: 100%;
+  overflow: hidden;
+  padding: 20px 0;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+
+/* Nuevo sistema de marquee infinito */
+.trusted-brands__marquee {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.trusted-brands__marquee-inner {
+  display: flex;
+  width: 200%; /* Asegura que haya suficiente espacio para dos conjuntos de logos */
+  animation: marquee var(--scroll-speed) linear infinite;
+}
+
+.trusted-brands__scroll-container:hover .trusted-brands__marquee-inner {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* Solo se mueve la mitad, que es un conjunto completo */
+}
+
+.trusted-brands__logo-list {
+  display: flex;
+  flex: 0 0 50%; /* Cada lista ocupa exactamente la mitad del contenedor */
+  padding: 0;
+}
+
+.trusted-brands__logo-item {
+  flex: 0 0 auto;
+  padding: 0 calc(var(--logo-spacing) / 2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trusted-brands__logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--logo-height);
+  max-width: 160px;
+}
+
+.trusted-brands__logo {
+  max-height: var(--logo-height);
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.trusted-brands__logo-link:hover .trusted-brands__logo {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+.trusted-brands__logo-placeholder {
+  height: var(--logo-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 16px;
+  background-color: #f5f5f5;
+  padding: 0 20px;
+  border-radius: 4px;
+  text-align: center;
+  min-width: 120px;
+}
+
+.trusted-brands__placeholder {
+  text-align: center;
+  padding: 30px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+@media screen and (min-width: 750px) {
+  .trusted-brands {
+    padding: 60px 0;
+  }
+  
+  .trusted-brands__title {
+    font-size: 36px;
+    margin-bottom: 15px;
+  }
+  
+  .trusted-brands__subtitle {
+    font-size: 18px;
+    margin-bottom: 40px;
+  }
+}
+{% endstylesheet %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const marqueeInner = document.querySelector('#TrustedBrands-{{ section.id }} .trusted-brands__marquee-inner');
+    const scrollContainer = document.querySelector('#TrustedBrands-{{ section.id }} .trusted-brands__scroll-container');
+    const logoLists = document.querySelectorAll('#TrustedBrands-{{ section.id }} .trusted-brands__logo-list');
+    
+    if (marqueeInner && logoLists.length > 0) {
+      // Verificar si hay suficientes logos para crear un efecto de carrusel
+      const logoItems = document.querySelectorAll('#TrustedBrands-{{ section.id }} .trusted-brands__logo-item');
+      const logoCount = logoItems.length / 2; // Dividimos por 2 porque tenemos dos listas
+      
+      if (logoCount === 0) {
+        // Si no hay logos, detenemos la animación
+        marqueeInner.style.animation = 'none';
+      } else if (logoCount < 4) {
+        // Si hay muy pocos logos, duplicamos los existentes
+        const firstList = logoLists[0];
+        const originalItems = Array.from(firstList.querySelectorAll('.trusted-brands__logo-item'));
+        
+        // Duplicamos en ambas listas para mantener la consistencia
+        logoLists.forEach(list => {
+          // Duplicamos hasta tener al menos 8 elementos
+          for (let i = 0; originalItems.length * (i + 1) < 8; i++) {
+            originalItems.forEach(item => {
+              const clone = item.cloneNode(true);
+              list.appendChild(clone);
+            });
+          }
+        });
+      }
+      
+      // Ajustar velocidad según cantidad de logos
+      if (logoCount > 0) {
+        // Velocidad base
+        let baseSpeed = {{ section.settings.scroll_speed }};
+        
+        // Ajustar proporcionalmente para mantener velocidad visual constante
+        if (logoCount > 6) {
+          baseSpeed = baseSpeed * (logoCount / 6);
+        }
+        
+        marqueeInner.style.animationDuration = baseSpeed + 's';
+      }
+      
+      // Pausar cuando la página no está visible (ahorro de recursos)
+      document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+          marqueeInner.style.animationPlayState = 'paused';
+        } else {
+          marqueeInner.style.animationPlayState = 'running';
+        }
+      });
+      
+      // Comportamiento de hover
+      {% if section.settings.pause_on_hover %}
+      if (scrollContainer) {
+        scrollContainer.addEventListener('mouseenter', function() {
+          marqueeInner.style.animationPlayState = 'paused';
+        });
+        
+        scrollContainer.addEventListener('mouseleave', function() {
+          marqueeInner.style.animationPlayState = 'running';
+        });
+      }
+      {% endif %}
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Marcas de confianza",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Marcas que han confiado en nosotros"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "<p>Nos enorgullece trabajar con estas increíbles marcas</p>"
+    },
+    {
+      "type": "header",
+      "content": "Ajustes de visualización"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Ancho máximo del contenido",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 40,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Altura de logos",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "logo_spacing",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Espacio entre logos",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Velocidad de desplazamiento",
+      "info": "Duración en segundos de una vuelta completa",
+      "default": 30
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pausar al pasar el cursor",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Color de fondo",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Color de texto",
+      "default": "#333333"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand_logo",
+      "name": "Logo de marca",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Logo de la marca"
+        },
+        {
+          "type": "text",
+          "id": "brand_name",
+          "label": "Nombre de la marca",
+          "info": "Se muestra si no hay imagen"
+        },
+        {
+          "type": "url",
+          "id": "brand_url",
+          "label": "Enlace (opcional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_in_new_tab",
+          "label": "Abrir enlace en nueva pestaña",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marcas de confianza",
+      "blocks": [
+        {
+          "type": "brand_logo"
+        },
+        {
+          "type": "brand_logo"
+        },
+        {
+          "type": "brand_logo"
+        },
+        {
+          "type": "brand_logo"
+        },
+        {
+          "type": "brand_logo"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

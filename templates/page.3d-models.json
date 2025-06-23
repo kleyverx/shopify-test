@@ -1,0 +1,43 @@
+{
+  "sections": {
+    "main": {
+      "type": "model-3d-showcase",
+      "settings": {
+        "title": "Galería de Modelos 3D",
+        "description": "<p>Explora nuestra galería de modelos 3D interactivos. Puedes rotar, hacer zoom y ver cada modelo desde todos los ángulos para apreciar cada detalle.</p>",
+        "model_3d": "https://cdn.shopify.com/3d/models/401f3cae0ec0b726/Astronaut.glb",
+        "model_alt_text": "Modelo 3D de un astronauta",
+        "use_sample_model": true,
+        "viewer_height": 600,
+        "viewer_background": "#f5f5f5",
+        "progress_bar_color": "#4285F4",
+        "progress_bar_height": 4,
+        "enable_autoplay": true,
+        "enable_autorotate": true,
+        "enable_zoom": true,
+        "show_controls_help": true,
+        "shadow_intensity": 60,
+        "exposure": 100,
+        "environment_image": "",
+        "background_image": "",
+        "height_mobile": 600,
+        "height_desktop": 800,
+        "overlay_color": "rgba(0,0,0,0.3)",
+        "overlay_opacity": 30,
+        "text_alignment": "center",
+        "text_color": "#ffffff"
+      }
+    },
+    "featured_models": {
+      "type": "custom-section",
+      "settings": {
+        "title": "Otros Modelos Disponibles",
+        "description": "<p>Explora nuestra colección completa de modelos 3D disponibles para visualización e interacción.</p>"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "featured_models"
+  ]
+}

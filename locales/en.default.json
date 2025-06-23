@@ -48,5 +48,260 @@
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
     "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "trusted_brands": {
+    "title": "Brands That Trust Us",
+    "subtitle": "We are proud to work with these amazing brands",
+    "add_logos": "Add brand logos in the theme editor"
+  },
+  "vertical_videos": {
+    "empty": "Add videos in the theme editor",
+    "add_video": "Add video content",
+    "not_supported": "Your browser does not support the video tag",
+    "invalid_url": "Invalid video URL format"
+  },
+  "sections": {
+    "model_3d_showcase": {
+      "name": "3D Model Showcase",
+      "settings": {
+        "title": {
+          "label": "Title"
+        },
+        "description": {
+          "label": "Description"
+        },
+        "model_3d": {
+          "label": "3D Model URL"
+        },
+        "model_upload_help": {
+          "content": "How to upload a 3D model"
+        },
+        "model_alt_text": {
+          "label": "Alternative text"
+        },
+        "viewer_height": {
+          "label": "Viewer height"
+        },
+        "viewer_background": {
+          "label": "Viewer background color"
+        },
+        "progress_bar_color": {
+          "label": "Progress bar color"
+        },
+        "progress_bar_height": {
+          "label": "Progress bar height"
+        },
+        "enable_autoplay": {
+          "label": "Enable autoplay"
+        },
+        "enable_autorotate": {
+          "label": "Enable auto-rotation"
+        },
+        "enable_zoom": {
+          "label": "Enable zoom"
+        },
+        "show_controls_help": {
+          "label": "Show controls help"
+        },
+        "shadow_intensity": {
+          "label": "Shadow intensity"
+        },
+        "exposure": {
+          "label": "Light exposure"
+        },
+        "environment_image": {
+          "label": "Environment image URL"
+        },
+        "background_image": {
+          "label": "Background image"
+        },
+        "overlay_color": {
+          "label": "Overlay color"
+        },
+        "overlay_opacity": {
+          "label": "Overlay opacity"
+        },
+        "text_alignment": {
+          "label": "Text alignment",
+          "options": {
+            "left": {
+              "label": "Left"
+            },
+            "center": {
+              "label": "Center"
+            },
+            "right": {
+              "label": "Right"
+            }
+          }
+        },
+        "text_color": {
+          "label": "Text color"
+        }
+      },
+      "presets": {
+        "name": "3D Model Showcase"
+      }
+    },
+    "banner": {
+      "name": "Banner",
+      "settings": {
+        "title": {
+          "label": "Title"
+        },
+        "subtitle": {
+          "label": "Subtitle"
+        },
+        "description": {
+          "label": "Description"
+        },
+        "image": {
+          "label": "Background image"
+        },
+        "height_mobile": {
+          "label": "Banner height (mobile)"
+        },
+        "height_desktop": {
+          "label": "Banner height (desktop)"
+        },
+        "overlay_color": {
+          "label": "Overlay color"
+        },
+        "overlay_opacity": {
+          "label": "Overlay opacity"
+        },
+        "text_alignment": {
+          "label": "Text alignment",
+          "options": {
+            "left": {
+              "label": "Left"
+            },
+            "center": {
+              "label": "Center"
+            },
+            "right": {
+              "label": "Right"
+            }
+          }
+        },
+        "text_color": {
+          "label": "Text color"
+        },
+        "text_shadow": {
+          "label": "Add text shadow"
+        },
+        "button_label": {
+          "label": "Button text"
+        },
+        "button_link": {
+          "label": "Button link"
+        },
+        "button_style": {
+          "label": "Button style",
+          "options": {
+            "primary": {
+              "label": "Primary"
+            },
+            "secondary": {
+              "label": "Secondary (outline)"
+            }
+          }
+        }
+      },
+      "presets": {
+        "name": "Banner"
+      }
+    },
+    "portfolio": {
+      "name": "Portfolio",
+      "add_projects": "Add portfolio projects using the customize panel",
+      "settings": {
+        "title": {
+          "label": "Title"
+        },
+        "description": {
+          "label": "Description"
+        },
+        "header__layout": {
+          "content": "Layout"
+        },
+        "columns_desktop": {
+          "label": "Columns on desktop"
+        },
+        "columns_mobile": {
+          "label": "Columns on mobile"
+        },
+        "grid_gap": {
+          "label": "Space between items"
+        },
+        "header__padding": {
+          "content": "Padding"
+        },
+        "padding_top": {
+          "label": "Top padding"
+        },
+        "padding_bottom": {
+          "label": "Bottom padding"
+        }
+      },
+      "blocks": {
+        "project": {
+          "name": "Project",
+          "settings": {
+            "image": {
+              "label": "Image"
+            },
+            "image_width": {
+              "label": "Image width"
+            },
+            "image_height": {
+              "label": "Image height"
+            },
+            "title": {
+              "label": "Title"
+            },
+            "description": {
+              "label": "Description"
+            },
+            "link_text": {
+              "label": "Button text"
+            },
+            "link_url": {
+              "label": "Button link"
+            },
+            "link_style": {
+              "label": "Button style",
+              "options": {
+                "button": {
+                  "label": "Button"
+                },
+                "link": {
+                  "label": "Text link"
+                }
+              }
+            }
+          }
+        }
+      },
+      "presets": {
+        "name": "Portfolio"
+      }
+    }
+  },
+  "hero_carousel": {
+    "previous_slide": "Previous slide",
+    "next_slide": "Next slide",
+    "go_to_slide": "Go to slide",
+    "add_slides": "Add slides to your hero carousel",
+    "add_slides_description": "Use the theme editor to add slides with compelling content and imagery."
+  },
+  "smart_contact": {
+    "iframe_title": "Formulario de contacto",
+    "feature_ai": "Análisis personalizado",
+    "feature_instant": "Respuesta rápida",
+    "feature_email": "Propuesta a medida",
+    "button_text": "Contactar ahora",
+    "privacy_note": "Nuestro equipo revisará tu consulta y te enviará una propuesta personalizada por email.",
+    "ai_notice": "Nuestro equipo especializado analizará tu consulta y te enviará una propuesta personalizada por email en menos de 24 horas."
   }
 }

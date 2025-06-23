@@ -1,0 +1,53 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "team": {
+      "type": "team",
+      "blocks": {
+        "member-1": {
+          "type": "member",
+          "settings": {
+            "name": "María García",
+            "position": "CEO / Fundadora",
+            "bio": "<p>María tiene más de 10 años de experiencia en el sector y es la mente creativa detrás de nuestra marca.</p>"
+          }
+        },
+        "member-2": {
+          "type": "member",
+          "settings": {
+            "name": "Carlos Rodríguez",
+            "position": "Director de Diseño",
+            "bio": "<p>Carlos aporta su visión única y creatividad para desarrollar productos que destacan en el mercado.</p>"
+          }
+        },
+        "member-3": {
+          "type": "member",
+          "settings": {
+            "name": "Ana Martínez",
+            "position": "Gerente de Marketing",
+            "bio": "<p>Ana se especializa en estrategias digitales innovadoras que han impulsado nuestro crecimiento.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "member-1",
+        "member-2",
+        "member-3"
+      ],
+      "settings": {
+        "title": "Nuestro Equipo",
+        "description": "<p>Conoce a las personas apasionadas que trabajan cada día para ofrecerte los mejores productos y servicios.</p>",
+        "columns_desktop": "3",
+        "columns_mobile": "1",
+        "grid_gap": 24
+      }
+    }
+  },
+  "order": [
+    "main",
+    "team"
+  ]
+}

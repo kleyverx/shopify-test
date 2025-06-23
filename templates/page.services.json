@@ -1,0 +1,99 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "services": {
+      "type": "services",
+      "blocks": {
+        "service-1": {
+          "type": "service_item",
+          "settings": {
+            "title": "Diseño Web",
+            "description": "<p>Creamos sitios web modernos y atractivos que destacan tu marca y optimizan la experiencia del usuario.</p>",
+            "features": "Diseño responsivo, Optimización SEO, Experiencia de usuario mejorada, Integración con redes sociales",
+            "icon_name": "design",
+            "button_text": "Ver portafolio",
+            "button_link": "/pages/portfolio"
+          }
+        },
+        "service-2": {
+          "type": "service_item",
+          "settings": {
+            "title": "Desarrollo de Apps",
+            "description": "<p>Desarrollamos aplicaciones personalizadas que se adaptan perfectamente a las necesidades de tu negocio.</p>",
+            "features": "Apps móviles, Aplicaciones web, Integraciones API, Mantenimiento continuo",
+            "icon_name": "development",
+            "button_text": "Conoce más",
+            "button_link": "/collections/all"
+          }
+        },
+        "service-3": {
+          "type": "service_item",
+          "settings": {
+            "title": "Marketing Digital",
+            "description": "<p>Estrategias efectivas de marketing digital para aumentar tu visibilidad online y atraer más clientes.</p>",
+            "features": "SEO, Redes sociales, Email marketing, Publicidad PPC",
+            "icon_name": "marketing",
+            "button_text": "Nuestros resultados",
+            "button_link": "/collections/all"
+          }
+        },
+        "service-4": {
+          "type": "service_item",
+          "settings": {
+            "title": "Consultoría",
+            "description": "<p>Asesoramiento especializado para optimizar tus estrategias digitales y mejorar los resultados de tu negocio.</p>",
+            "features": "Análisis de negocio, Estrategia digital, Optimización de conversión, Análisis de competencia",
+            "icon_name": "consultation",
+            "button_text": "Agendar consulta",
+            "button_link": "/pages/contact"
+          }
+        },
+        "service-5": {
+          "type": "service_item",
+          "settings": {
+            "title": "Soporte Técnico",
+            "description": "<p>Servicio de asistencia técnica para resolver cualquier problema y mantener tu presencia digital funcionando sin problemas.</p>",
+            "features": "Soporte 24/7, Mantenimiento preventivo, Resolución de problemas, Actualizaciones de seguridad",
+            "icon_name": "support",
+            "button_text": "Contactar soporte",
+            "button_link": "/pages/contact"
+          }
+        },
+        "service-6": {
+          "type": "service_item",
+          "settings": {
+            "title": "Analítica Web",
+            "description": "<p>Monitoreo y análisis de datos para entender el comportamiento de tus usuarios y optimizar tu estrategia digital.</p>",
+            "features": "Seguimiento de conversiones, Informes personalizados, Optimización de embudo, Análisis de audiencia",
+            "icon_name": "analytics",
+            "button_text": "Ver planes",
+            "button_link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "service-1",
+        "service-2",
+        "service-3",
+        "service-4",
+        "service-5",
+        "service-6"
+      ],
+      "settings": {
+        "title": "Nuestros Servicios",
+        "description": "<p>Ofrecemos una amplia gama de servicios profesionales diseñados para impulsar tu presencia digital y hacer crecer tu negocio.</p>",
+        "card_style": "shadow",
+        "columns_desktop": "3",
+        "columns_mobile": "1",
+        "grid_gap": 24
+      }
+    }
+  },
+  "order": [
+    "main",
+    "services"
+  ]
+}

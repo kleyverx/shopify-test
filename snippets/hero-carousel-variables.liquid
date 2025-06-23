@@ -1,0 +1,18 @@
+{% comment %}
+  @name Hero Carousel Variables
+  @description Variables CSS para el componente Hero Carousel
+{% endcomment %}
+
+<style>
+  #HeroCarousel-{{ section.id }} {
+    --content-width: {{ section.settings.content_width | default: 1200 }}px;
+    --slide-height: {{ section.settings.slide_height | default: 500 }}px;
+    --background-color: {{ section.settings.background_color | default: '#f8f9fa' }};
+    --slide-background: {{ section.settings.slide_background | default: '#ffffff' }};
+    --title-color: {{ section.settings.title_color | default: '#1F2937' }};
+    --subtitle-color: {{ section.settings.subtitle_color | default: '#6B7280' }};
+    --description-color: {{ section.settings.description_color | default: '#4B5563' }};
+    --button-background: {{ section.settings.button_background | default: '#1F2937' }};
+    --button-color: {{ section.settings.button_color | default: '#ffffff' }};
+  }
+</style>

@@ -1,0 +1,365 @@
+{% comment %}
+  @name Portfolio
+  @description A portfolio section to showcase projects or work
+  @version 1.0
+{% endcomment %}
+
+<div class="portfolio" id="Portfolio-{{ section.id }}">
+  <div class="portfolio__header">
+    {% if section.settings.title != blank %}
+      <h2 class="portfolio__title">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+    {% if section.settings.description != blank %}
+      <div class="portfolio__description">{{ section.settings.description }}</div>
+    {% endif %}
+  </div>
+  
+  <div class="portfolio__grid" 
+    style="--columns-mobile: {{ section.settings.columns_mobile }};
+           --columns-desktop: {{ section.settings.columns_desktop }};
+           --gap: {{ section.settings.grid_gap }}px;">
+    {% for block in section.blocks %}
+      <div class="portfolio__item" {{ block.shopify_attributes }}>
+        {% if block.settings.image != blank %}
+          <div class="portfolio__image-wrapper">
+            {% render 'image', 
+              image: block.settings.image,
+              width: block.settings.image_width, 
+              height: block.settings.image_height,
+              class: 'portfolio__image'
+            %}
+          </div>
+        {% else %}
+          <div class="portfolio__image-placeholder">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+        
+        <div class="portfolio__content">
+          {% if block.settings.title != blank %}
+            <h3 class="portfolio__item-title">{{ block.settings.title | escape }}</h3>
+          {% endif %}
+          
+          {% if block.settings.description != blank %}
+            <div class="portfolio__item-description">{{ block.settings.description }}</div>
+          {% endif %}
+          
+          {% if block.settings.link_text != blank and block.settings.link_url != blank %}
+            <a href="{{ block.settings.link_url }}" class="portfolio__item-link button{% if block.settings.link_style == 'link' %} button--link{% endif %}">
+              {{ block.settings.link_text | escape }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  
+  {% if section.blocks.size == 0 %}
+    <div class="portfolio__placeholder">
+      <p>Add portfolio projects using the customize panel</p>
+    </div>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+.portfolio {
+  padding: var(--section-padding-top, 60px) var(--section-padding-right, 20px) var(--section-padding-bottom, 60px) var(--section-padding-left, 20px);
+  max-width: var(--page-width, 1200px);
+  margin: 0 auto;
+}
+
+.portfolio__header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.portfolio__title {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: var(--heading-scale-medium);
+}
+
+.portfolio__description {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.portfolio__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--columns-mobile, 1), 1fr);
+  gap: var(--gap, 20px);
+}
+
+@media screen and (min-width: 750px) {
+  .portfolio__grid {
+    grid-template-columns: repeat(var(--columns-desktop, 3), 1fr);
+  }
+}
+
+.portfolio__item {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: var(--card-corner-radius, 0);
+  overflow: hidden;
+  background-color: var(--card-background, transparent);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portfolio__item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.portfolio__image-wrapper {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--image-aspect-ratio, 1/1);
+}
+
+.portfolio__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.portfolio__item:hover .portfolio__image {
+  transform: scale(1.05);
+}
+
+.portfolio__image-placeholder {
+  background-color: #f0f0f0;
+  aspect-ratio: var(--image-aspect-ratio, 1/1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portfolio__content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.portfolio__item-title {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: var(--heading-scale-small);
+}
+
+.portfolio__item-description {
+  margin-bottom: 15px;
+  flex-grow: 1;
+}
+
+.portfolio__item-link {
+  align-self: flex-start;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.portfolio__item-link.button--link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-link);
+  text-decoration: underline;
+}
+
+.portfolio__placeholder {
+  border: 2px dashed #ddd;
+  border-radius: 4px;
+  padding: 40px 20px;
+  text-align: center;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Portfolio",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Portafolio"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Space between items",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "project",
+      "name": "Project",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "min": 100,
+          "max": 1000,
+          "step": 50,
+          "default": 500,
+          "unit": "px",
+          "label": "Image width"
+        },
+        {
+          "type": "range",
+          "id": "image_height",
+          "min": 100,
+          "max": 1000,
+          "step": 50,
+          "default": 500,
+          "unit": "px",
+          "label": "Image height"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Proyecto"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Button text",
+          "default": "Ver más"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "link_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "button",
+              "label": "Button"
+            },
+            {
+              "value": "link",
+              "label": "Text link"
+            }
+          ],
+          "default": "button"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Portfolio",
+      "blocks": [
+        {
+          "type": "project"
+        },
+        {
+          "type": "project"
+        },
+        {
+          "type": "project"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

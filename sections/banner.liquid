@@ -1,0 +1,352 @@
+{% comment %}
+  @name Banner
+  @description A banner section with overlaid title and subtitle
+  @version 1.0
+{% endcomment %}
+
+<div class="banner" id="Banner-{{ section.id }}">
+  <div class="banner__wrapper" style="
+    --banner-height-mobile: {{ section.settings.height_mobile }}px;
+    --banner-height-desktop: {{ section.settings.height_desktop }}px;
+    --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --text-alignment: {{ section.settings.text_alignment }};
+    --text-color: {{ section.settings.text_color }};
+    --text-shadow: {% if section.settings.text_shadow %}2px 4px 4px rgba(0, 0, 0, 0.4){% else %}none{% endif %};
+  ">
+    <div class="banner__image-container">
+      {% if section.settings.image != blank %}
+        {% render 'image', 
+          image: section.settings.image,
+          width: 2000, 
+          height: section.settings.height_desktop,
+          class: 'banner__image'
+        %}
+      {% else %}
+        <div class="banner__placeholder">
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {% endif %}
+      
+      {% if section.settings.overlay_color != "rgba(0,0,0,0)" %}
+        <div class="banner__overlay" style="background-color: {{ section.settings.overlay_color }}"></div>
+      {% endif %}
+    </div>
+    
+    <div class="banner__content-container">
+      <div class="banner__content">
+        {% if section.settings.subtitle != blank %}
+          <p class="banner__subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
+        
+        {% if section.settings.title != blank %}
+          <h2 class="banner__title">{{ section.settings.title }}</h2>
+        {% endif %}
+        
+        {% if section.settings.description != blank %}
+          <div class="banner__description">{{ section.settings.description }}</div>
+        {% endif %}
+        
+        {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+          <div class="banner__button-wrapper">
+            <a href="{{ section.settings.button_link }}" class="banner__button{% if section.settings.button_style == 'secondary' %} banner__button--secondary{% endif %}">
+              {{ section.settings.button_label }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+.banner {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.banner__wrapper {
+  position: relative;
+  height: var(--banner-height-mobile);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner__image-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.banner__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.banner__placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: var(--overlay-opacity);
+  z-index: 2;
+}
+
+.banner__content-container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  padding: 20px;
+  text-align: var(--text-alignment);
+}
+
+.banner__content {
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--text-color);
+  text-shadow: var(--text-shadow);
+}
+
+.banner__title {
+  margin: 0 0 15px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.banner__subtitle {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.banner__description {
+  margin-bottom: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.banner__button-wrapper {
+  margin-top: 20px;
+}
+
+.banner__button {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: var(--button-background, #000000);
+  color: var(--button-text, #ffffff);
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.banner__button:hover {
+  background-color: var(--button-background-hover, #333333);
+  transform: translateY(-2px);
+}
+
+.banner__button--secondary {
+  background-color: transparent;
+  border: 2px solid currentColor;
+}
+
+.banner__button--secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media screen and (min-width: 750px) {
+  .banner__wrapper {
+    height: var(--banner-height-desktop);
+  }
+  
+  .banner__title {
+    font-size: 48px;
+  }
+  
+  .banner__subtitle {
+    font-size: 20px;
+  }
+  
+  .banner__description {
+    font-size: 18px;
+  }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Banner Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Banner Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "SUBTITLE TEXT"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Use this banner to welcome customers to your store or highlight a special promotion.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Banner Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "min": 200,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Banner height (mobile)",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "min": 300,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "label": "Banner height (desktop)",
+      "default": 500
+    },
+    {
+      "type": "header",
+      "content": "Overlay Settings"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "rgba(0,0,0,0.4)"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "text_shadow",
+      "label": "Add text shadow",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Button (Optional)"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary (outline)"
+        }
+      ],
+      "default": "primary"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner",
+      "settings": {
+        "title": "Welcome to Our Store",
+        "subtitle": "NEW COLLECTION",
+        "description": "<p>Discover our latest products and special offers.</p>"
+      }
+    }
+  ]
+}
+{% endschema %}

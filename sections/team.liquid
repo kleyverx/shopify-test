@@ -1,0 +1,396 @@
+{% comment %}
+  @name Team Members
+  @description A section to showcase team members with images and information
+  @version 1.0
+{% endcomment %}
+
+<div class="team" id="Team-{{ section.id }}">
+  <div class="team__header">
+    {% if section.settings.title != blank %}
+      <h2 class="team__title">{{ section.settings.title }}</h2>
+    {% endif %}
+    {% if section.settings.description != blank %}
+      <div class="team__description">{{ section.settings.description }}</div>
+    {% endif %}
+  </div>
+  
+  <div class="team__grid" 
+    style="--columns-mobile: {{ section.settings.columns_mobile }};
+           --columns-desktop: {{ section.settings.columns_desktop }};
+           --gap: {{ section.settings.grid_gap }}px;">
+    {% for block in section.blocks %}
+      <div class="team__member" {{ block.shopify_attributes }}>
+        {% if block.settings.image != blank %}
+          <div class="team__image-wrapper">
+            {% render 'image', 
+              image: block.settings.image,
+              width: 400, 
+              height: 400,
+              class: 'team__image'
+            %}
+          </div>
+        {% else %}
+          <div class="team__image-placeholder">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+        
+        <div class="team__content">
+          {% if block.settings.name != blank %}
+            <h3 class="team__member-name">{{ block.settings.name }}</h3>
+          {% endif %}
+          
+          {% if block.settings.position != blank %}
+            <div class="team__member-position">{{ block.settings.position }}</div>
+          {% endif %}
+          
+          {% if block.settings.bio != blank %}
+            <div class="team__member-bio">{{ block.settings.bio }}</div>
+          {% endif %}
+          
+          <div class="team__social-links">
+            {% if block.settings.email != blank %}
+              <a href="mailto:{{ block.settings.email }}" class="team__social-link team__social-link--email" aria-label="Email">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              </a>
+            {% endif %}
+            
+            {% if block.settings.linkedin != blank %}
+              <a href="{{ block.settings.linkedin }}" class="team__social-link team__social-link--linkedin" target="_blank" rel="noopener" aria-label="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+              </a>
+            {% endif %}
+            
+            {% if block.settings.twitter != blank %}
+              <a href="{{ block.settings.twitter }}" class="team__social-link team__social-link--twitter" target="_blank" rel="noopener" aria-label="Twitter">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+              </a>
+            {% endif %}
+            
+            {% if block.settings.instagram != blank %}
+              <a href="{{ block.settings.instagram }}" class="team__social-link team__social-link--instagram" target="_blank" rel="noopener" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  
+  {% if section.blocks.size == 0 %}
+    <div class="team__placeholder">
+      <p>Add team members using the customize panel</p>
+    </div>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+.team {
+  padding: var(--section-padding-top, 60px) var(--section-padding-right, 20px) var(--section-padding-bottom, 60px) var(--section-padding-left, 20px);
+  max-width: var(--page-width, 1200px);
+  margin: 0 auto;
+}
+
+.team__header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.team__title {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: var(--heading-scale-medium, 24px);
+}
+
+.team__description {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.team__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--columns-mobile, 1), 1fr);
+  gap: var(--gap, 20px);
+}
+
+@media screen and (min-width: 750px) {
+  .team__grid {
+    grid-template-columns: repeat(var(--columns-desktop, 3), 1fr);
+  }
+}
+
+.team__member {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: var(--card-corner-radius, 0);
+  overflow: hidden;
+  background-color: var(--card-background, #ffffff);
+  box-shadow: var(--card-shadow, 0 4px 6px rgba(0, 0, 0, 0.1));
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team__member:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-shadow-hover, 0 10px 15px rgba(0, 0, 0, 0.1));
+}
+
+.team__image-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.team__image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.team__member:hover .team__image {
+  transform: scale(1.05);
+}
+
+.team__image-placeholder {
+  background-color: #f0f0f0;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team__content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.team__member-name {
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-size: var(--heading-scale-small, 18px);
+}
+
+.team__member-position {
+  margin-bottom: 10px;
+  font-style: italic;
+  color: var(--color-text-subtle, #777777);
+}
+
+.team__member-bio {
+  margin-bottom: 15px;
+  flex-grow: 1;
+  font-size: var(--font-size-base, 14px);
+}
+
+.team__social-links {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.team__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--color-background-secondary, #f5f5f5);
+  color: var(--color-text, #333333);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.team__social-link:hover {
+  background-color: var(--color-primary, #000000);
+  color: var(--color-text-inverted, #ffffff);
+}
+
+.team__social-link svg {
+  width: 18px;
+  height: 18px;
+}
+
+.team__placeholder {
+  border: 2px dashed #ddd;
+  border-radius: 4px;
+  padding: 40px 20px;
+  text-align: center;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Team Members",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Nuestro Equipo"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Conoce a las personas detrás de nuestra marca</p>"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Space between members",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "member",
+      "name": "Team Member",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Member photo"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Nombre del miembro"
+        },
+        {
+          "type": "text",
+          "id": "position",
+          "label": "Position",
+          "default": "Cargo o posición"
+        },
+        {
+          "type": "richtext",
+          "id": "bio",
+          "label": "Biography",
+          "default": "<p>Breve descripción o biografía de este miembro del equipo.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Social Media"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email",
+          "info": "example@domain.com"
+        },
+        {
+          "type": "url",
+          "id": "linkedin",
+          "label": "LinkedIn URL"
+        },
+        {
+          "type": "url",
+          "id": "twitter",
+          "label": "Twitter/X URL"
+        },
+        {
+          "type": "url",
+          "id": "instagram",
+          "label": "Instagram URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Team Members",
+      "blocks": [
+        {
+          "type": "member"
+        },
+        {
+          "type": "member"
+        },
+        {
+          "type": "member"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
