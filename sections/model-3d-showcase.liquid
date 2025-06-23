@@ -61,13 +61,8 @@
       </div>
       
       <div class="model3d-viewer-container">
-        {% if section.settings.model_3d != blank or section.settings.use_sample_model %}
-          {% comment %}Añadimos soporte para CORS y aseguramos que la URL sea accesible{% endcomment %}
-          {% if section.settings.use_sample_model %}
-            {% assign model_url = "https://modelviewer.dev/shared-assets/models/Astronaut.glb" %}
-          {% else %}
-            {% assign model_url = section.settings.model_3d %}
-          {% endif %}
+        {% if section.settings.model_3d != blank %}
+          {% assign model_url = section.settings.model_3d %}
           
           <model-viewer 
             class="model3d-viewer"
@@ -104,11 +99,6 @@
             <div class="model3d-loading" slot="loading">
               Cargando modelo 3D...
             </div>
-            {% if section.settings.use_sample_model %}
-              <div class="model3d-sample-notice">
-                Usando modelo de ejemplo. Para usar tu propio modelo, desactiva la opción "Usar modelo de ejemplo" en la configuración.
-              </div>
-            {% endif %}
             
             <!-- Instrucciones de control para el modelo 3D (panel flotante) -->
             <div class="model3d-viewer-controls">
@@ -884,13 +874,6 @@ model-viewer:hover .model3d-rotation-indicator {
       "id": "model_3d",
       "label": "URL del modelo 3D",
       "info": "Pega aquí la URL del archivo 3D que subiste a la biblioteca de archivos"
-    },
-    {
-      "type": "checkbox",
-      "id": "use_sample_model",
-      "label": "Usar modelo de ejemplo",
-      "default": false,
-      "info": "Activa esta opción para usar un modelo 3D de ejemplo si tienes problemas con la carga de tu propio modelo"
     },
     {
       "type": "text",
