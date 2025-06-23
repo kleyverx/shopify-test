@@ -294,14 +294,5 @@
     "go_to_slide": "Go to slide",
     "add_slides": "Add slides to your hero carousel",
     "add_slides_description": "Use the theme editor to add slides with compelling content and imagery."
-  },
-  "smart_contact": {
-    "iframe_title": "Formulario de contacto",
-    "feature_ai": "Análisis personalizado",
-    "feature_instant": "Respuesta rápida",
-    "feature_email": "Propuesta a medida",
-    "button_text": "Contactar ahora",
-    "privacy_note": "Nuestro equipo revisará tu consulta y te enviará una propuesta personalizada por email.",
-    "ai_notice": "Nuestro equipo especializado analizará tu consulta y te enviará una propuesta personalizada por email en menos de 24 horas."
   }
 }
