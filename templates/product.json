@@ -12,9 +12,25 @@
     "main": {
       "type": "product",
       "settings": {}
+    },
+    "176582591008783d67": {
+      "type": "apps",
+      "blocks": {
+        "image_uploader_upload_widget_GypnDB": {
+          "type": "shopify://apps/image-uploader/blocks/upload-widget/019b2362-940b-7d57-8ef3-f4a8aa824fe1",
+          "settings": {
+            "button_label": "Upload Image"
+          }
+        }
+      },
+      "block_order": [
+        "image_uploader_upload_widget_GypnDB"
+      ],
+      "settings": {}
     }
   },
   "order": [
-    "main"
+    "main",
+    "176582591008783d67"
   ]
 }
